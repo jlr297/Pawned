@@ -1,3 +1,11 @@
+'''
+Name: Jesse Rolheiser
+NSID: jlr297
+Date: March 8th 2015
+Desc: AI for a chess variant game 'Pawned!' using minimax search with alph-beta pruning
+      Each player had 5 pawns and the goal is to get one of your pawns to the opposing side
+'''
+
 # Class for Pieces of the board
 #   label - String, name of the pieces, stores colour and number, eg. "W3"
 #   location - (row,col), where the piece is located on the board
@@ -87,7 +95,7 @@ def copy_board(board):
         newBoard.board[piece.row][piece.col] = piece.label
     return newBoard
 
-# Successor function, generates possible moves for a player
+# Successor function, generates all possible moves for a player
 #   board - The board state
 #   Wturn - Bool, whose turn it is
 def Successor(board, Wturn):
@@ -114,7 +122,8 @@ def Successor(board, Wturn):
                     successor_moves.append(Move(piece.label, piece.row+1, piece.col+1))
     return successor_moves
 
-# Function to determine if a given board is in a terminal state, either player winning, or a stalemate
+# Function to determine if a given board is in a terminal state
+# Board is terminal if either player wins, or it's a stalemate
 def terminal_board(board):
     # If white is out of pieces
     if len(board.white) == 0:
@@ -235,11 +244,16 @@ def minimax_ab(state, maxing, depth, h, alpha, beta):
                 if beta <= alpha:
                     break
         return bestMin
-   
+
 # Estimated value for who is winning the current game
-def eval_board(board): ## higher better for white, lower better for black
+# Positive values denote white is winning
+# Zero denotes a tie
+# Negative values denote black is winning
+def eval_board(board):
     h_cost = 0
     h_cost += (len(board.white) - len(board.black))
+    # h_cost += 5 - min([piece.row for piece in board.white])   # How close white is to the end of the board
+    # h_cost += 0 - max([piece.row for piece in board.black])   # How close black is to the end of the board
     return h_cost
 
 # Gets input from player and makes the move if it's valid
@@ -278,6 +292,7 @@ def player_turn(board, white_turn):
                 break
     return (white_turn, play_game)
 
+# Takes a turn for a computer player
 def comp_turn(board, white_turn, depth_limit):
     # move = minimax(board, white_turn, depth_limit, eval_board)
     move = minimax_ab(board, white_turn, depth_limit, eval_board, -100000, 100000)
@@ -292,12 +307,18 @@ board.print_board()
 white_turn = True
 play_game = True
 
-p1_cpu = True
+'''
+Variables to change the gameplay
+p1_cpu and p2_cpu, bools for if player is computer or human
+depth_limit controls how far the AI looks ahead
+'''
+
+p1_cpu = False
 p2_cpu = True
 
-depth_limit = 12
+depth_limit = 11
 
-while play_game == True:
+while play_game:
     if white_turn:
         print "White's Turn"
     else:
