@@ -300,47 +300,50 @@ def comp_turn(board, white_turn, depth_limit):
     board.apply_move(move[1])
     board.print_board()
 
-# Start of Main
-board = Board()
-board.print_board()
+def main():
+      board = Board()
+      board.print_board()
 
-white_turn = True
-play_game = True
-
-'''
-Variables to change the gameplay
-p1_cpu and p2_cpu, bools for if player is computer or human
-depth_limit controls how far the AI looks ahead
-'''
-
-p1_cpu = False
-p2_cpu = True
-
-depth_limit = 11
-
-while play_game:
-    if white_turn:
-        print "White's Turn"
-    else:
-        print "Black's Turn"
-    if white_turn:
-        if p1_cpu:
-            comp_turn(board, white_turn, depth_limit)
-            white_turn = False
-        else:
-            turn = player_turn(board, white_turn)
-            white_turn = turn[0]
-            play_game = turn[1]
-        if terminal_board(board):
-            play_game = False
-    else:
-        if p2_cpu:
-            comp_turn(board, white_turn, depth_limit)
-            white_turn = True
-        else:
-            turn = player_turn(board, white_turn)
-            white_turn = turn[0]
-            play_game = turn[1]
-        if terminal_board(board):
-            play_game = False
-quit = input("Game Over")
+      white_turn = True
+      play_game = True
+      
+      '''
+      Variables to change the gameplay
+      p1_cpu and p2_cpu, bools for if player is computer or human
+      depth_limit controls how far the AI looks ahead
+      '''
+      
+      p1_cpu = False
+      p2_cpu = True
+      
+      depth_limit = 11
+      
+      while play_game:
+          if white_turn:
+              print "White's Turn"
+          else:
+              print "Black's Turn"
+          if white_turn:
+              if p1_cpu:
+                  comp_turn(board, white_turn, depth_limit)
+                  white_turn = False
+              else:
+                  turn = player_turn(board, white_turn)
+                  white_turn = turn[0]
+                  play_game = turn[1]
+              if terminal_board(board):
+                  play_game = False
+          else:
+              if p2_cpu:
+                  comp_turn(board, white_turn, depth_limit)
+                  white_turn = True
+              else:
+                  turn = player_turn(board, white_turn)
+                  white_turn = turn[0]
+                  play_game = turn[1]
+              if terminal_board(board):
+                  play_game = False
+      quit = input("Game Over")
+      
+if __name__ == '__main__':
+      main()
